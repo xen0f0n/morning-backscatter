@@ -18,7 +18,7 @@ LIMITS = {
     ("pulse", "summary"): 300,
     ("quicklook", "caption"): 360,
     ("coherence", "summary"): 360,
-    ("doubleBounce", "caption"): 220,
+    ("doubleBounce"): 220,
 }
 
 
