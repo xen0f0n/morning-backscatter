@@ -14,6 +14,18 @@ from generate_og import generate_og_image
 TEMPLATES_DIR = ROOT / "templates"
 ASSETS_DIR = ROOT / "assets"
 
+from urllib.parse import urlparse
+
+
+def write_cname(site: dict) -> None:
+    """Write GitHub Pages custom-domain CNAME file into dist/."""
+    base_url = str(site.get("baseUrl", "")).strip()
+    domain = urlparse(base_url).netloc or base_url
+    domain = domain.replace("https://", "").replace("http://", "").strip("/")
+
+    if domain and "localhost" not in domain:
+        write_file(DIST_DIR / "CNAME", f"{domain}\n")
+
 
 def clean_dist() -> None:
     if DIST_DIR.exists():
@@ -45,6 +57,8 @@ def build(include_drafts: bool = False, base_url: str | None = None) -> None:
 
     clean_dist()
     copy_assets()
+
+    write_cname(site)
 
     env = get_env()
     issue_template = env.get_template("issue.html.j2")
