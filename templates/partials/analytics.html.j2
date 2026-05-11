@@ -1,0 +1,15 @@
+{% if site.analytics and site.analytics.googleAnalyticsId %}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics.googleAnalyticsId }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('js', new Date());
+
+  gtag('config', '{{ site.analytics.googleAnalyticsId }}', {
+    page_title: document.title,
+    page_location: window.location.href
+  });
+</script>
+{% endif %}

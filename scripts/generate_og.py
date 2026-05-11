@@ -1,104 +1,83 @@
+#!/usr/bin/env python3
 from __future__ import annotations
 
-from io import BytesIO
+import base64
 from pathlib import Path
-from typing import Any
 from urllib.parse import urlparse
 
-import requests
-from PIL import Image, ImageDraw, ImageFont
-
-OG_SIZE = (1200, 627)
+import cairosvg
 
 
-def _font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
-    candidates = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/Library/Fonts/Arial Unicode.ttf",
-        "/System/Library/Fonts/Supplemental/Arial.ttf",
-    ]
-    for path in candidates:
-        try:
-            return ImageFont.truetype(path, size=size)
-        except Exception:
-            continue
-    return ImageFont.load_default()
+ROOT = Path(__file__).resolve().parents[1]
+
+OG_SOURCE_DIR = ROOT / "og"
+TEMPLATE_PATH = OG_SOURCE_DIR / "template.svg"
+CONTOURS_PATH = OG_SOURCE_DIR / "contours.png"
 
 
-def _load_background(issue: dict[str, Any]) -> Image.Image:
-    url = issue.get("quicklook", {}).get("thumbUrl") or issue.get("quicklook", {}).get("fullUrl")
-    if url and urlparse(str(url)).scheme in {"http", "https"}:
-        try:
-            response = requests.get(url, timeout=15)
-            response.raise_for_status()
-            return Image.open(BytesIO(response.content)).convert("RGB")
-        except Exception:
-            pass
-    return Image.new("RGB", OG_SIZE, (10, 12, 18))
+def normalise_url(base_url: str) -> str:
+    parsed = urlparse(base_url)
+    return parsed.netloc or base_url.replace("https://", "").replace("http://", "").strip("/")
 
 
-def _cover(img: Image.Image, size: tuple[int, int]) -> Image.Image:
-    img = img.convert("RGB")
-    src_w, src_h = img.size
-    dst_w, dst_h = size
-    scale = max(dst_w / src_w, dst_h / src_h)
-    resized = img.resize((int(src_w * scale), int(src_h * scale)))
-    left = (resized.width - dst_w) // 2
-    top = (resized.height - dst_h) // 2
-    return resized.crop((left, top, left + dst_w, top + dst_h))
+def png_to_data_uri(path: Path) -> str:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing contour PNG: {path}")
+
+    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:image/png;base64,{encoded}"
 
 
-def _wrap_text(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.ImageFont, max_width: int) -> list[str]:
-    words = str(text).split()
-    lines: list[str] = []
-    current = ""
-    for word in words:
-        candidate = f"{current} {word}".strip()
-        if draw.textbbox((0, 0), candidate, font=font)[2] <= max_width:
-            current = candidate
-        else:
-            if current:
-                lines.append(current)
-            current = word
-    if current:
-        lines.append(current)
-    return lines
+def issue_number(issue: dict) -> int:
+    value = issue.get("issueNo") or issue.get("issue_no")
+
+    if value is None:
+        raise KeyError("Issue is missing 'issueNo'")
+
+    return int(value)
 
 
-def generate_og_image(issue: dict[str, Any], site: dict[str, Any], output_path: Path) -> None:
+def generate_og_image(issue: dict, site: dict, output_path: Path) -> None:
+    """
+    Generate a 1200x630 Open Graph PNG from:
+    - og/template.svg
+    - og/contours.png
+    - issue.issueNo
+
+    This keeps the OG template and contour artwork out of dist/,
+    while writing only the final generated PNG to dist/assets/og/.
+    """
+    if not TEMPLATE_PATH.exists():
+        raise FileNotFoundError(f"Missing OG template: {TEMPLATE_PATH}")
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    bg = _cover(_load_background(issue), OG_SIZE)
-    overlay = Image.new("RGB", OG_SIZE, (5, 8, 12))
-    img = Image.blend(bg, overlay, 0.48)
-    draw = ImageDraw.Draw(img)
+    svg = TEMPLATE_PATH.read_text(encoding="utf-8")
 
-    draw.rounded_rectangle((58, 58, 1142, 569), radius=34, fill=(0, 0, 0), outline=(255, 255, 255), width=2)
+    issue_no = issue_number(issue)
+    # site_url = normalise_url(str(site.get("baseUrl", "https://morningbackscatter.space")))
+    contour_data_uri = png_to_data_uri(CONTOURS_PATH)
 
-    title_font = _font(72, bold=True)
-    issue_font = _font(30, bold=True)
-    label_font = _font(24, bold=True)
-    text_font = _font(28, bold=False)
-    small_font = _font(22, bold=False)
+    replacements = {
+        "{{ISSUE}}": f"{issue_no:03d}",
+        # "{{SITE_URL}}": site_url,
+        "{{BYLINE}}": str(site.get("bylineName", "Spectral Reflectance")),
+        "{{TAGLINE_LINE_1}}": "A quick morning overpass of the",
+        "{{TAGLINE_LINE_2}}": "remote sensing and geospatial world.",
+    }
 
-    draw.text((92, 92), site.get("title", "The Morning Backscatter"), font=title_font, fill=(255, 255, 255))
-    draw.text((98, 180), f"Issue #{int(issue['issueNo']):03d}", font=issue_font, fill=(110, 231, 183))
-    draw.text((98, 246), "PULSE  ·  QUICKLOOK  ·  COHERENCE  ·  DOUBLE BOUNCE", font=label_font, fill=(196, 181, 253))
+    for key, value in replacements.items():
+        svg = svg.replace(key, value)
 
-    y = 318
-    for line in _wrap_text(draw, issue.get("tagline") or site.get("tagline", ""), text_font, 860)[:2]:
-        draw.text((98, y), line, font=text_font, fill=(235, 245, 255))
-        y += 42
+    # Support both SVG href styles.
+    svg = svg.replace('href="contours.png"', f'href="{contour_data_uri}"')
+    svg = svg.replace("href='contours.png'", f"href='{contour_data_uri}'")
+    svg = svg.replace('xlink:href="contours.png"', f'xlink:href="{contour_data_uri}"')
+    svg = svg.replace("xlink:href='contours.png'", f"xlink:href='{contour_data_uri}'")
 
-    pulse_title = issue.get("pulse", {}).get("title", "")
-    if pulse_title:
-        y += 16
-        draw.text((98, y), "Today's pulse:", font=small_font, fill=(251, 146, 60))
-        y += 34
-        for line in _wrap_text(draw, pulse_title, text_font, 820)[:2]:
-            draw.text((98, y), line, font=text_font, fill=(255, 255, 255))
-            y += 40
-
-    draw.text((98, 522), site.get("bylineName", "Spectral Reflectance"), font=small_font, fill=(180, 190, 205))
-    draw.text((884, 522), "morning-backscatter", font=small_font, fill=(180, 190, 205))
-    img.save(output_path, "PNG")
+    cairosvg.svg2png(
+        bytestring=svg.encode("utf-8"),
+        write_to=str(output_path),
+        output_width=1200,
+        output_height=630,
+    )

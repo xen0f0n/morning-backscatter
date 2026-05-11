@@ -73,6 +73,8 @@
     .noise-texture > * { position: relative; z-index: 1; }
   </style>
 
+  {% include "partials/analytics.html.j2" %}
+  
   <script>
     window.ISSUE = {{ issue_json | safe }};
 

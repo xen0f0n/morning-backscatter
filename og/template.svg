@@ -1,0 +1,57 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="rightArtworkClip">
+      <rect x="430" y="0" width="770" height="630"/>
+    </clipPath>
+
+    <!-- Keeps text side clean while letting the contour field bleed in softly -->
+    <linearGradient id="textCleanFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f7f7f7" stop-opacity="1"/>
+      <stop offset="37%" stop-color="#f7f7f7" stop-opacity="1"/>
+      <stop offset="53%" stop-color="#f7f7f7" stop-opacity="0.88"/>
+      <stop offset="68%" stop-color="#f7f7f7" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#f7f7f7" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f7f7f7"/>
+
+  <!-- Right contour artwork: deliberately oversized and cropped -->
+  <g clip-path="url(#rightArtworkClip)">
+<image
+  href="contours.png"
+  x="500"
+  y="-120"
+  width="810"
+  height="810"
+  preserveAspectRatio="xMidYMid meet"
+  opacity="0.75"
+/>
+  </g>
+
+  <!-- Fade overlay: makes the contour feel integrated, not pasted on -->
+  <rect width="1200" height="630" fill="url(#textCleanFade)"/>
+
+  <!-- Left text block -->
+  <text x="80" y="155" font-size="82" font-family="Inter, Arial, sans-serif" font-weight="700" fill="#001f63">The</text>
+  <text x="80" y="247" font-size="82" font-family="Inter, Arial, sans-serif" font-weight="700" fill="#001f63">Morning</text>
+  <text x="80" y="339" font-size="82" font-family="Inter, Arial, sans-serif" font-weight="700" fill="#001f63">Backscatter</text>
+
+  <line x1="80" y1="405" x2="125" y2="405" stroke="#10a8d8" stroke-width="4"/>
+  <text x="150" y="415" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="700" fill="#10a8d8">Issue #{{ISSUE}}</text>
+
+  <text x="80" y="460" font-size="24" font-family="Inter, Arial, sans-serif" fill="#0e2258">
+    A quick morning overpass of the
+  </text>
+  <text x="80" y="500" font-size="24" font-family="Inter, Arial, sans-serif" fill="#0e2258">
+    remote sensing and geospatial world.
+  </text>
+
+  <text x="80" y="560" font-size="20" font-family="Inter, Arial, sans-serif" fill="#0e2258">
+    by Spectral Reflectance
+  </text>
+
+  <text x="80" y="590" font-size="20" font-family="Inter, Arial, sans-serif" fill="#10a8d8">
+    morningbackscatter.space
+  </text>
+</svg>

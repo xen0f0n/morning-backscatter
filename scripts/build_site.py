@@ -57,8 +57,7 @@ def build(include_drafts: bool = False, base_url: str | None = None) -> None:
 
     clean_dist()
     copy_assets()
-
-    write_cname(site)
+    
 
     env = get_env()
     issue_template = env.get_template("issue.html.j2")
@@ -66,7 +65,7 @@ def build(include_drafts: bool = False, base_url: str | None = None) -> None:
     rss_template = env.get_template("rss.xml.j2")
 
     for issue in issues:
-        generate_og_image(issue, site, DIST_DIR / "assets" / "og" / f"{issue['slug']}.png")
+        generate_og_image(issue, site, DIST_DIR / "assets" / "og" / f"{issue['slug']}.png")        
         issue_json = json.dumps(issue, ensure_ascii=False)
         html = issue_template.render(site=site, issue=issue, issue_json=issue_json)
         write_file(DIST_DIR / "issue" / issue["slug"] / "index.html", html)
