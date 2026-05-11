@@ -40,7 +40,7 @@ quicklook:
 
 coherence:
   label: "COHERENCE"
-  kicker: "One useful read."
+  kicker: "One useful resource."
   title: "Towards mutualism: reconciling field and EO data"
   summary: "Field data is not perfect truth; it is sampled, biased, and context-dependent. Treat point-to-pixel validation as a statistical reconciliation problem."
   url: "https://newsletter.cecil.earth/p/towards-mutualism-reconciling-differences"
@@ -54,11 +54,18 @@ doubleBounce:
   label: "DOUBLE BOUNCE"
   kicker: "The odd return."
   title: "The bane of EO"
-  caption: "Cloud-free tasking, except for the target."
+  # caption: "Cloud-free tasking, except for the target."
+  caption: ""
   imageUrl: "assets/images/001-double-bounce.png"
   alt: "Comic about Earth Observation experts receiving high-resolution cloud-free imagery where the target area is covered by a single opaque cloud."
   openUrl: ""
   cta: "Open comic →"
+  
+  # Optional card-preview controls only.
+  previewZoom: 1.7
+  previewPosition: "center 38%"
+  previewOrigin: "center center"
+  
   tags:
     - eo-humour
     - clouds
@@ -67,8 +74,8 @@ doubleBounce:
 
 promo:
   enabled: false
-  eyebrow: "SUPPORT THE SIGNAL"
-  title: "Keep Spectral Reflectance independent"
-  imgUrl: "assets/images/042-quicklook.png"
-  url: "https://buymeacoffee.com/YOURNAME"
-  note: "Optional support/promo slot. Keep rare and tasteful."
+  eyebrow: ""
+  title: ""
+  imgUrl: "assets/images/001-quicklook.png"
+  url: "https://www.spectralreflectance.space/"
+  note: "Optional support/promo slot."

@@ -122,7 +122,7 @@
     <header class="flex justify-between items-start gap-4 mb-4 px-2 pt-2">
       <div class="min-w-0">
         <h1 class="text-3xl sm:text-4xl font-black tracking-tighter transition-colors"
-          :class="darkMode ? 'bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-emerald-400 to-violet-400' : 'text-slate-950'"
+          :class="darkMode ? 'bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-emerald-400 to-teal-300' : 'text-slate-950'"
           x-text="issue.title"></h1>
         <p class="mt-1 text-xs font-mono opacity-65" x-text="issue.tagline"></p>
         <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
@@ -210,14 +210,14 @@
       </article>
 
       <article id="coherence" class="flex flex-col rounded-3xl p-6 border transition-all duration-300""
-        :class="darkMode ? 'bg-gradient-to-br from-emerald-950/35 to-slate-950 border-white/10 hover:border-emerald-400/40' : 'bg-white border-slate-200 shadow-sm hover:shadow-md'">
+        :class="darkMode ? 'bg-white/5 border-white/10 hover:border-emerald-400/40' : 'bg-white border-slate-200 shadow-sm hover:shadow-md'"
         <div>
           <div class="mb-3">
             <div class="text-[10px] font-bold text-emerald-500 tracking-widest" x-text="issue.coherence.label"></div>
             <p class="mt-1 text-[10px] font-mono opacity-55" x-text="issue.coherence.kicker"></p>
           </div>
-          <h3 class="text-lg font-ui font-semibold leading-snug mb-2" x-text="issue.coherence.title"></h3>
-          <p class="text-xs opacity-75 leading-relaxed mb-3" x-text="issue.coherence.summary"></p>
+          <h3 class="text-xl font-bold leading-tight mb-2" x-text="issue.coherence.title"></h3>
+          <p class="text-sm opacity-75 leading-relaxed mb-3" x-text="issue.coherence.summary"></p>
         </div>
         <div class="mt-4 flex justify-end">
           <a :href="issue.coherence.url" target="_blank" rel="noopener noreferrer"
@@ -231,46 +231,70 @@
         @click="openDoubleBounce()"
         @keydown.enter.prevent="openDoubleBounce()"
         @keydown.space.prevent="openDoubleBounce()"
-        class="relative noise-texture rounded-3xl p-6 flex flex-col justify-center items-center text-center overflow-hidden border cursor-pointer group select-none transition-all duration-300"
-        :class="darkMode ? 'bg-violet-950/35 text-white border-white/10 hover:border-violet-400/40' : 'bg-white text-slate-900 border-slate-200 hover:shadow-md'"
+        class="group relative rounded-3xl overflow-hidden border cursor-pointer min-h-[280px] transition-all duration-300"
+        :class="darkMode ? 'border-white/10 hover:border-violet-400/40' : 'border-slate-200 shadow-sm hover:shadow-md'"
         aria-label="Open Double Bounce item">
 
-        <div class="font-bold text-[10px] uppercase tracking-[0.32em] mb-1 text-violet-400"
-          x-text="issue.doubleBounce.label"></div>
-
-        <p class="text-[10px] font-mono opacity-60 mb-4" x-text="issue.doubleBounce.kicker"></p>
-
-        <!-- Image mode or fallback SVG mode -->
+        <!-- Image / comic mode -->
         <template x-if="doubleBounceVisualUrl()">
-          <div class="w-full max-w-[330px]">
-            <img :src="doubleBounceVisualUrl()"
-              :alt="issue.doubleBounce.alt || issue.doubleBounce.title || 'Double Bounce visual'"
-              class="w-full h-auto rounded-xl border border-black/10 bg-white/70 group-hover:scale-[1.01] transition"
-              draggable="false" />
-          </div>
+          <img
+            :src="doubleBounceVisualUrl()"
+            :alt="issue.doubleBounce.alt || issue.doubleBounce.title || 'Double Bounce visual'"
+            class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 group-hover:opacity-90"
+            :style="{
+              objectPosition: issue.doubleBounce.previewPosition || 'center center',
+              transform: 'scale(' + (issue.doubleBounce.previewZoom || 1.25) + ')',
+              transformOrigin: issue.doubleBounce.previewOrigin || 'center center'
+            }"
+            draggable="false"
+          />
         </template>
 
-        <!-- Link-only mode -->
+        <!-- Link-only fallback -->
         <template x-if="!doubleBounceVisualUrl() && issue.doubleBounce.openUrl">
           <div
-            class="w-full max-w-[330px] rounded-2xl border p-6"
-            :class="darkMode ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-slate-50'"
+            class="absolute inset-0 flex items-center justify-center p-8"
+            :class="darkMode ? 'bg-gradient-to-br from-violet-950 to-slate-950' : 'bg-gradient-to-br from-violet-50 to-slate-100'"
           >
-            <div
-              class="mx-auto mb-4 h-14 w-14 rounded-2xl border flex items-center justify-center text-xl"
-              :class="darkMode ? 'border-white/15 bg-white/5 text-white/80' : 'border-slate-300 bg-white text-slate-700'"
-            >
-              ↗
+            <div class="text-center">
+              <div
+                class="mx-auto mb-4 h-14 w-14 rounded-2xl border flex items-center justify-center text-xl"
+                :class="darkMode ? 'border-white/15 bg-white/5 text-white/80' : 'border-slate-300 bg-white/70 text-slate-700'"
+              >
+                ↗
+              </div>
+              <p class="text-xs font-mono opacity-65" x-text="issue.doubleBounce.cta || 'Open link →'"></p>
             </div>
-            <p class="text-xs font-mono opacity-65" x-text="issue.doubleBounce.cta || 'Open link →'"></p>
           </div>
         </template>
 
-        <h3 class="mt-4 text-sm font-bold" x-text="issue.doubleBounce.title"></h3>
-        <p class="mt-1 text-xs opacity-80" x-text="issue.doubleBounce.caption"></p>
+        <!-- Soft bottom scrim for readability, no caption box -->
+        <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/85 via-black/35 to-transparent"></div>
 
-        <div class="mt-3 text-[10px] font-mono opacity-65 uppercase">
-          <span x-text="doubleBounceVisualUrl() ? 'Click to enlarge' : (issue.doubleBounce.cta || 'Open link →')"></span>
+        <!-- Top label -->
+        <div class="absolute top-4 left-4 right-4 flex justify-between items-start gap-3 pointer-events-none">
+          <div class="rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-white/10">
+            <div class="text-[10px] font-bold tracking-widest text-violet-200" x-text="issue.doubleBounce.label"></div>
+          </div>
+        </div>
+
+        <!-- Bottom caption, no box -->
+        <div class="absolute bottom-0 left-0 p-6 w-full pointer-events-none">
+          <div class="max-w-[82%]">
+            <h3
+              class="text-lg font-bold text-white leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
+              x-text="issue.doubleBounce.title"
+            ></h3>
+
+            <p
+              class="mt-1 text-xs text-white/85 leading-snug drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
+              x-text="issue.doubleBounce.caption"
+            ></p>
+
+            <p class="mt-2 text-[9px] font-mono uppercase tracking-widest text-white/55 drop-shadow">
+              Click to enlarge
+            </p>
+          </div>
         </div>
       </article>
 
@@ -330,7 +354,7 @@
       <img :src="lightboxImg" class="max-h-[80vh] w-auto max-w-full rounded-lg shadow-2xl border border-white/10 bg-black/30"
         :alt="lightboxAlt" />
       <p x-text="lightboxCap"
-        class="text-center text-white/80 mt-4 font-mono text-sm max-w-2xl bg-black/50 px-4 py-2 rounded-2xl sm:rounded-full border border-white/10">
+          class="text-center text-white/80 mt-4 font-mono text-sm max-w-3xl bg-black/40 px-5 py-3 rounded-2xl border border-white/10 leading-relaxed">
       </p>
       <div x-show="toast" class="mt-4 text-xs font-mono text-white/70" x-text="toast"></div>
     </div>
