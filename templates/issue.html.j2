@@ -505,7 +505,7 @@
           const issueNo = String(this.issue.issueNo).padStart(3, '0');
           const url = this.baseUrl();
           const title = `${this.issue.title} — Issue #${issueNo}`;
-          const text = this.issue.shareSummary || this.issue.tagline || '';
+          const text = this.issue.tagline || 'The Morning Backscatter';
           await this.shareUrl(url, title, text);
         },
 
@@ -514,8 +514,9 @@
           const url = key === 'issue' ? this.baseUrl() : this.deepLink(key);
           const issueNo = String(this.issue.issueNo).padStart(3, '0');
           const baseTitle = `${this.issue.title} — Issue #${issueNo}`;
+
           let title = baseTitle;
-          let text = this.issue.shareSummary || this.issue.tagline || '';
+          let text = this.issue.tagline || 'The Morning Backscatter';
 
           if (key === 'quicklook') {
             title = `${baseTitle} — Quicklook`;
