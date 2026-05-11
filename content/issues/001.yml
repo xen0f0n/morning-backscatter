@@ -54,7 +54,6 @@ doubleBounce:
   label: "DOUBLE BOUNCE"
   kicker: "The odd return."
   title: "The bane of EO"
-  # caption: "Cloud-free tasking, except for the target."
   caption: ""
   imageUrl: "assets/images/001-double-bounce.png"
   alt: "Comic about Earth Observation experts receiving high-resolution cloud-free imagery where the target area is covered by a single opaque cloud."
