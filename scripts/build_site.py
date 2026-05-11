@@ -9,7 +9,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from common import ROOT, DIST_DIR, load_issues, load_site_config
-from generate_og import generate_og_image
+from generate_og import generate_og_image, generate_home_og_image
 
 TEMPLATES_DIR = ROOT / "templates"
 ASSETS_DIR = ROOT / "assets"
@@ -57,6 +57,8 @@ def build(include_drafts: bool = False, base_url: str | None = None) -> None:
 
     clean_dist()
     copy_assets()
+
+    generate_home_og_image(site, DIST_DIR / "assets" / "og" / "home.png")
     
 
     env = get_env()

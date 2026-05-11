@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import base64
 from pathlib import Path
-from urllib.parse import urlparse
 
 import cairosvg
 
@@ -13,11 +12,6 @@ ROOT = Path(__file__).resolve().parents[1]
 OG_SOURCE_DIR = ROOT / "og"
 TEMPLATE_PATH = OG_SOURCE_DIR / "template.svg"
 CONTOURS_PATH = OG_SOURCE_DIR / "contours.png"
-
-
-def normalise_url(base_url: str) -> str:
-    parsed = urlparse(base_url)
-    return parsed.netloc or base_url.replace("https://", "").replace("http://", "").strip("/")
 
 
 def png_to_data_uri(path: Path) -> str:
@@ -37,43 +31,41 @@ def issue_number(issue: dict) -> int:
     return int(value)
 
 
-def generate_og_image(issue: dict, site: dict, output_path: Path) -> None:
-    """
-    Generate a 1200x630 Open Graph PNG from:
-    - og/template.svg
-    - og/contours.png
-    - issue.issueNo
+def issue_block(issue_no: int) -> str:
+    return f'''
+  <line x1="80" y1="414" x2="125" y2="414" stroke="#10a8d8" stroke-width="4"/>
+  <text x="150" y="424" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="700" fill="#10a8d8">Issue #{issue_no:03d}</text>
+'''
 
-    This keeps the OG template and contour artwork out of dist/,
-    while writing only the final generated PNG to dist/assets/og/.
-    """
+
+def render_og_svg(*, issue_no: int | None = None) -> str:
     if not TEMPLATE_PATH.exists():
         raise FileNotFoundError(f"Missing OG template: {TEMPLATE_PATH}")
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
     svg = TEMPLATE_PATH.read_text(encoding="utf-8")
-
-    issue_no = issue_number(issue)
-    # site_url = normalise_url(str(site.get("baseUrl", "https://morningbackscatter.space")))
     contour_data_uri = png_to_data_uri(CONTOURS_PATH)
 
     replacements = {
-        "{{ISSUE}}": f"{issue_no:03d}",
-        # "{{SITE_URL}}": site_url,
-        "{{BYLINE}}": str(site.get("bylineName", "Spectral Reflectance")),
+        "{{ISSUE_BLOCK}}": issue_block(issue_no) if issue_no is not None else "",
         "{{TAGLINE_LINE_1}}": "A quick morning overpass of the",
         "{{TAGLINE_LINE_2}}": "remote sensing and geospatial world.",
+        "{{BYLINE}}": "Spectral Reflectance",
+        "{{SITE_URL}}": "morningbackscatter.space",
     }
 
     for key, value in replacements.items():
         svg = svg.replace(key, value)
 
-    # Support both SVG href styles.
     svg = svg.replace('href="contours.png"', f'href="{contour_data_uri}"')
     svg = svg.replace("href='contours.png'", f"href='{contour_data_uri}'")
     svg = svg.replace('xlink:href="contours.png"', f'xlink:href="{contour_data_uri}"')
     svg = svg.replace("xlink:href='contours.png'", f"xlink:href='{contour_data_uri}'")
+
+    return svg
+
+
+def render_svg_to_png(svg: str, output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     cairosvg.svg2png(
         bytestring=svg.encode("utf-8"),
@@ -81,3 +73,13 @@ def generate_og_image(issue: dict, site: dict, output_path: Path) -> None:
         output_width=1200,
         output_height=630,
     )
+
+
+def generate_og_image(issue: dict, site: dict, output_path: Path) -> None:
+    svg = render_og_svg(issue_no=issue_number(issue))
+    render_svg_to_png(svg, output_path)
+
+
+def generate_home_og_image(site: dict, output_path: Path) -> None:
+    svg = render_og_svg(issue_no=None)
+    render_svg_to_png(svg, output_path)
