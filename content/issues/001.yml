@@ -19,6 +19,7 @@ pulse:
 
 quicklook:
   label: "QUICKLOOK"
+  labelPill: true
   kicker: "One scene, map, or visual worth opening."
   title: "Greenland’s changing ice"
   subtitle: "Sentinel-1 radar colours surface change across three winter acquisitions."
@@ -41,17 +42,24 @@ quicklook:
 coherence:
   label: "COHERENCE"
   kicker: "One useful resource."
-  title: "Towards mutualism: reconciling field and EO data"
-  summary: "Field data is not perfect truth; it is sampled, biased, and context-dependent. Treat point-to-pixel validation as a statistical reconciliation problem."
-  url: "https://newsletter.cecil.earth/p/towards-mutualism-reconciling-differences"
-  cta: "Read more →"
-  tags: 
-    - validation
-    - field-data
-    - uncertainty
+  title: "Tracking Iceberg A23a with Copernicus Sentinel-3 data"
+  summary: "EUMETSAT follows Iceberg A23a's drift from the Weddell Sea toward South Georgia using Copernicus Sentinel-3 OLCI observations, while explaining when optical sensors work, when radar becomes essential, and why continuous polar monitoring matters for marine safety and climate adaptation."
+  url: "https://www.eumetsat.int/features/behind-data-tracking-iceberg-a23a-copernicus-sentinel-3-data"
+  cta: "EUMETSAT →"
+  tags:
+    - eumetsat
+    - sentinel-3
+    - olci
+    - iceberg
+    - a23a
+    - antarctica
+    - sea-ice
+    - ocean
+    - polar-monitoring
 
 doubleBounce:
   label: "DOUBLE BOUNCE"
+  labelPill: True
   kicker: "The odd return."
   title: "The bane of EO"
   caption: ""

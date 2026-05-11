@@ -191,12 +191,23 @@
           loading="lazy" decoding="async" />
         <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/55 via-black/15 to-transparent"></div>
         <div class="absolute top-4 left-4 right-4 flex justify-between items-start gap-3 pointer-events-none">
-          <div class="rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-white/10">
-            <div class="text-[10px] font-bold tracking-widest text-white/85" x-text="issue.quicklook.label"></div>
-          </div>
-          <a :href="issue.quicklook.sourceUrl" target="_blank" rel="noopener noreferrer"
-            class="relative z-20 pointer-events-auto text-[10px] rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-white/10 text-white/85 hover:bg-white hover:text-black transition">
-            <span x-text="issue.quicklook.sourceLabel"></span>
+        <div
+          :class="labelPill('quicklook')
+            ? 'rounded-full px-3 py-1 bg-sky-950/35 backdrop-blur-sm border border-sky-200/20'
+            : 'px-0 py-1'"
+        >
+          <div
+            class="text-[10px] font-bold tracking-widest uppercase"
+            :class="labelPill('quicklook')
+              ? 'text-sky-100'
+              : 'text-sky-100 drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)]'"
+            x-text="issue.quicklook.label"
+          ></div>
+        </div>
+        <a :href="issue.quicklook.sourceUrl" target="_blank" rel="noopener noreferrer"
+          class="relative z-20 pointer-events-auto text-[10px] rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-sky-200/20 text-sky-100 hover:bg-sky-100 hover:text-sky-950 transition">
+          <span x-text="issue.quicklook.sourceLabel"></span>
+        </a>
           </a>
         </div>
         <div class="absolute bottom-0 left-0 p-6 w-full pointer-events-none">
@@ -273,9 +284,19 @@
 
         <!-- Top label -->
         <div class="absolute top-4 left-4 right-4 flex justify-between items-start gap-3 pointer-events-none">
-          <div class="rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-white/10">
-            <div class="text-[10px] font-bold tracking-widest text-violet-200" x-text="issue.doubleBounce.label"></div>
-          </div>
+        <div
+          :class="labelPill('doubleBounce')
+            ? 'rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-white/10'
+            : 'px-0 py-1'"
+        >
+          <div
+            class="text-[10px] font-bold tracking-widest uppercase"
+            :class="labelPill('doubleBounce')
+              ? 'text-violet-200'
+              : 'text-violet-200 drop-shadow-[0_1px_6px_rgba(0,0,0,0.85)]'"
+            x-text="issue.doubleBounce.label"
+          ></div>
+        </div>
         </div>
 
         <!-- Bottom caption, no box -->
@@ -410,6 +431,14 @@
 
         deepLink(key) { return this.baseUrl() + '#' + key; },
         
+        labelPill(section) {
+          return !(
+            this.issue &&
+            this.issue[section] &&
+            this.issue[section].labelPill === false
+          );
+        },
+
         doubleBounceVisualUrl() {
           if (!this.issue.doubleBounce) return '';
 
