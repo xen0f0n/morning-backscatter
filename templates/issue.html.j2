@@ -321,19 +321,26 @@
     <footer class="pb-6">
       <div class="backdrop-blur-md border rounded-full px-5 py-3 flex items-center justify-between shadow-xl transition-all duration-300"
         :class="darkMode ? 'bg-black/40 border-white/20 text-gray-300' : 'bg-white/80 border-slate-300 text-slate-600'">
+
         <a href="{{ site.baseUrl }}/"
           class="group flex items-center gap-2 hover:text-sky-500 transition"
-          aria-label="Go to The Morning Backscatter homepage">
+          aria-label="View all Morning Backscatter issues">
           <span class="text-[10px] font-mono">ALL ISSUES</span>
         </a>
+
         <div class="w-px h-4 bg-current opacity-20 mx-2" aria-hidden="true"></div>
+
         <a :href="issue.footer.fullSignalUrl" target="_blank" rel="noopener noreferrer"
-          class="group flex items-center gap-2 hover:text-emerald-500 transition" aria-label="Open Spectral Reflectance">
+          class="group flex items-center gap-2 hover:text-emerald-500 transition"
+          aria-label="Open Spectral Reflectance">
           <span class="text-[10px] font-bold tracking-widest">SPECTRAL REFLECTANCE</span>
         </a>
+
         <div class="w-px h-4 bg-current opacity-20 mx-2" aria-hidden="true"></div>
+
         <a :href="issue.footer.supportUrl" target="_blank" rel="noopener noreferrer"
-          class="group flex items-center gap-2 hover:text-yellow-500 transition" aria-label="Support the project">
+          class="group flex items-center gap-2 hover:text-yellow-500 transition"
+          aria-label="Support the project">
           <span class="text-[10px] font-mono">KEEP ME COHERENT</span>
         </a>
       </div>

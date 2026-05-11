@@ -9,22 +9,50 @@ from common import latest_publishable_issue, load_site_config
 
 def release_notes(issue: dict) -> str:
     issue_no = int(issue["issueNo"])
+
+    pulse_cta = issue["pulse"].get("cta", "Open source →")
+    coherence_cta = issue["coherence"].get("cta", "Read more →")
+
+    quicklook_url = f'{issue["canonicalUrl"]}#quicklook'
+    double_bounce_url = f'{issue["canonicalUrl"]}#double-bounce'
+
     return f"""# The Morning Backscatter #{issue_no:03d}
 
-**Pulse**  
-{issue["pulse"]["title"]}  
+{issue.get("tagline", "A quick morning overpass of the remote sensing and geospatial world.")}
+
+## Pulse
+
+**{issue["pulse"]["title"]}**
+
 {issue["pulse"].get("summary", "")}
 
-**Quicklook**  
-{issue["quicklook"]["title"]}  
-[Open quicklook]({issue["canonicalUrl"]}#quicklook)
+[{pulse_cta}]({issue["pulse"]["sourceUrl"]})
 
-**Coherence**  
-{issue["coherence"]["title"]}  
-[Read]({issue["coherence"]["url"]})
+## Quicklook
 
-**Double Bounce**  
-{issue["doubleBounce"]["title"]} - {issue["doubleBounce"].get("caption", "")}
+**{issue["quicklook"]["title"]}**
+
+{issue["quicklook"].get("subtitle", issue["quicklook"].get("caption", ""))}
+
+[Open quicklook]({quicklook_url})
+
+## Coherence
+
+**{issue["coherence"]["title"]}**
+
+{issue["coherence"].get("summary", "")}
+
+[{coherence_cta}]({issue["coherence"]["url"]})
+
+## Double Bounce
+
+**{issue["doubleBounce"]["title"]}**
+
+{issue["doubleBounce"].get("caption", "")}
+
+[Open Double Bounce]({double_bounce_url})
+
+---
 
 [Open the full issue]({issue["canonicalUrl"]})
 """
@@ -34,7 +62,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default=None)
     parser.add_argument("--notes-file", default="release-notes.md")
-    parser.add_argument("--github-output", default=None, help="Path to $GITHUB_OUTPUT")
+    parser.add_argument("--github-output", default=None)
     args = parser.parse_args()
 
     site = load_site_config(args.base_url)
