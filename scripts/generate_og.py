@@ -33,8 +33,8 @@ def issue_number(issue: dict) -> int:
 
 def issue_block(issue_no: int) -> str:
     return f'''
-  <line x1="80" y1="414" x2="125" y2="414" stroke="#10a8d8" stroke-width="4"/>
-  <text x="150" y="424" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="700" fill="#10a8d8">Issue #{issue_no:03d}</text>
+  <line x1="80" y1="405" x2="125" y2="405" stroke="#10a8d8" stroke-width="4"/>
+  <text x="150" y="415" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="700" fill="#10a8d8">Issue #{issue_no:03d}</text>
 '''
 
 
