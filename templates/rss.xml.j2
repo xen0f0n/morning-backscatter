@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>{{ site.title | e }}</title>
+    <link>{{ site.baseUrl }}</link>
+    <description>{{ site.tagline | e }}</description>
+    <language>{{ site.language | default('en') }}</language>
+    {% for issue in issues[:20] %}
+    <item>
+      <title>{{ issue.title | e }} — Issue #{{ "%03d"|format(issue.issueNo) }}</title>
+      <link>{{ issue.canonicalUrl }}</link>
+      <guid>{{ issue.canonicalUrl }}</guid>
+      <pubDate>{{ issue.rssDate }}</pubDate>
+      <description>{{ issue.shareSummary | e }}</description>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

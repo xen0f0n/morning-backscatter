@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="{{ site.language | default('en') }}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>{{ issue.title }} — Issue #{{ "%03d"|format(issue.issueNo) }}</title>
+  <meta name="description" content="{{ issue.tagline }}" />
+  <link rel="canonical" href="{{ issue.canonicalUrl }}" />
+
+  <meta property="og:title" content="{{ issue.title }} — Issue #{{ "%03d"|format(issue.issueNo) }}" />
+  <meta property="og:description" content="{{ issue.tagline }}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{{ issue.canonicalUrl }}" />
+  <meta property="og:image" content="{{ issue.ogImageUrl }}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="627" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ issue.title }} — Issue #{{ "%03d"|format(issue.issueNo) }}" />
+  <meta name="twitter:description" content="{{ issue.tagline }}" />
+  <meta name="twitter:image" content="{{ issue.ogImageUrl }}" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500&f[]=general-sans@500,600&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Satoshi', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            ui: ['General Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+          },
+          colors: { space: '#0B0C10', paper: '#F8FAFC' }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :focus-visible { outline: 2px solid rgba(52, 211, 153, 0.9); outline-offset: 3px; }
+    [x-cloak] { display: none !important; }
+    .noise-texture { position: relative; overflow: hidden; }
+    .noise-texture::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.10) 0 1px, transparent 2px) 0 0 / 18px 18px,
+        radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.08) 0 1px, transparent 2px) 0 0 / 22px 22px,
+        radial-gradient(circle at 40% 80%, rgba(0, 0, 0, 0.14) 0 1px, transparent 2px) 0 0 / 20px 20px,
+        radial-gradient(circle at 85% 25%, rgba(0, 0, 0, 0.10) 0 1px, transparent 2px) 0 0 / 26px 26px;
+      transform: rotate(12deg);
+      opacity: 0.75;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+    .noise-texture::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.28));
+      pointer-events: none;
+    }
+    .noise-texture > * { position: relative; z-index: 1; }
+  </style>
+
+  <script>
+    window.ISSUE = {{ issue_json | safe }};
+
+    function initialThemeIsDark() {
+      const stored = localStorage.getItem('mb_theme');
+      if (stored === 'dark') return true;
+      if (stored === 'light') return false;
+
+      // Default to light theme on first visit.
+      return false;
+    }
+
+    function doubleBounceSvgDataUrl() {
+      const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 240">
+  <rect x="0" y="0" width="520" height="240" rx="24" fill="rgba(255,255,255,0.94)"/>
+  <rect x="12" y="12" width="496" height="216" rx="18" fill="rgba(255,255,255,0.88)" stroke="rgba(0,0,0,0.10)"/>
+  <text x="28" y="42" font-family="ui-monospace, monospace" font-size="13" fill="rgba(0,0,0,0.55)">DOUBLE BOUNCE / false precision department</text>
+  <circle cx="112" cy="100" r="18" stroke="black" stroke-width="4" fill="none"/>
+  <path d="M112 118 L112 158" stroke="black" stroke-width="4" stroke-linecap="round"/>
+  <path d="M112 130 L86 148" stroke="black" stroke-width="4" stroke-linecap="round"/>
+  <path d="M112 130 L138 148" stroke="black" stroke-width="4" stroke-linecap="round"/>
+  <path d="M112 158 L92 196" stroke="black" stroke-width="4" stroke-linecap="round"/>
+  <path d="M112 158 L132 196" stroke="black" stroke-width="4" stroke-linecap="round"/>
+  <path d="M176 54 q0-20 20-20 h250 q20 0 20 20 v78 q0 20-20 20 h-168 l-30 20 7-20 h-59 q-20 0-20-20z"
+    fill="white" stroke="black" stroke-width="3"/>
+  <text x="202" y="80" font-family="ui-monospace, monospace" font-size="16" fill="black">
+    <tspan x="202" dy="0">“My GPS says I’m at</tspan>
+    <tspan x="202" dy="24">40.123456789°N.”</tspan>
+    <tspan x="202" dy="24">Pixel size: 10 m.</tspan>
+  </text>
+  <rect x="22" y="198" width="476" height="28" rx="10" fill="rgba(0,0,0,0.06)"/>
+  <text x="34" y="217" font-family="ui-monospace, monospace" font-size="14" fill="black">
+    False precision is still precision… emotionally.
+  </text>
+</svg>`;
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.trim());
+    }
+  </script>
+</head>
+
+<body x-data="morningBackscatterApp()" x-init="init()" x-cloak
+  :class="darkMode ? 'bg-space text-white' : 'bg-slate-50 text-slate-900'"
+  class="min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+
+  <main class="w-full max-w-3xl">
+    <header class="flex justify-between items-start gap-4 mb-4 px-2 pt-2">
+      <div class="min-w-0">
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tighter transition-colors"
+          :class="darkMode ? 'bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-emerald-400 to-violet-400' : 'text-slate-950'"
+          x-text="issue.title"></h1>
+        <p class="mt-1 text-xs font-mono opacity-65" x-text="issue.tagline"></p>
+        <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
+          <p class="text-[10px] font-ui tracking-widest uppercase opacity-60">
+            <span x-text="'Issue #' + String(issue.issueNo).padStart(3,'0')"></span>
+            <span class="opacity-40">•</span>
+            <span x-text="prettyDate(issue.dateISO)"></span>
+          </p>
+          <span class="opacity-25">|</span>
+          <a :href="issue.bylineUrl" target="_blank" rel="noopener noreferrer"
+            class="text-[10px] font-bold text-emerald-500 hover:underline underline-offset-4">
+            <span x-text="'By ' + issue.bylineName"></span>
+          </a>
+          <span class="opacity-25">|</span>
+          <button type="button" @click="shareIssue()"
+            class="text-[10px] font-mono opacity-70 hover:opacity-100 underline underline-offset-4"
+            aria-label="Share this issue">Share</button>
+          <span x-show="toast" class="text-[10px] font-mono opacity-60" x-text="toast"></span>
+        </div>
+      </div>
+
+      <button @click="toggleTheme()" class="p-2 rounded-full border transition-all hover:scale-105 shrink-0"
+        :class="darkMode ? 'border-white/20 bg-white/5 hover:bg-white/10' : 'border-slate-300 bg-white shadow-sm'"
+        aria-label="Toggle theme" type="button">
+        <span x-show="darkMode" class="text-yellow-300 text-lg">☀</span>
+        <span x-show="!darkMode" class="text-slate-700 text-lg">☾</span>
+      </button>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-8">
+
+    <article id="pulse"
+      class="flex flex-col justify-between rounded-3xl p-6 border transition-all duration-300"
+      :class="darkMode ? 'bg-white/5 border-white/10 hover:border-orange-400/40' : 'bg-white border-slate-200 shadow-sm hover:shadow-md'">
+
+      <div>
+        <div class="mb-4">
+          <div class="text-xs font-bold flex items-center gap-2 text-orange-500">
+            <span class="relative flex h-2 w-2" aria-hidden="true">
+              <span class="motion-reduce:hidden animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+            </span>
+            <span x-text="issue.pulse.label"></span>
+          </div>
+
+          <p class="mt-1 text-[10px] font-mono opacity-55" x-text="issue.pulse.kicker"></p>
+        </div>
+
+        <h2 class="text-xl font-bold leading-tight mb-2" x-text="issue.pulse.title"></h2>
+        <p class="text-sm opacity-75 leading-relaxed" x-text="issue.pulse.summary"></p>
+      </div>
+
+<div class="mt-4 flex justify-end">
+  <a :href="issue.pulse.sourceUrl" target="_blank" rel="noopener noreferrer"
+    class="text-xs font-bold hover:translate-x-1 transition">
+    <span x-text="issue.pulse.cta || 'Open →'"></span>
+  </a>
+</div>
+    </article>
+
+      <article id="quicklook"
+        class="group relative rounded-3xl overflow-hidden border cursor-zoom-in min-h-[280px] transition-all duration-300"
+        :class="darkMode ? 'border-white/10 hover:border-sky-400/40' : 'border-slate-200 shadow-sm hover:shadow-md'">
+        <img :src="issue.quicklook.thumbUrl" :alt="issue.quicklook.alt"
+          class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105 contrast-105 brightness-95 group-hover:brightness-100"
+          loading="lazy" decoding="async" />
+        <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/55 via-black/15 to-transparent"></div>
+        <div class="absolute top-4 left-4 right-4 flex justify-between items-start gap-3 pointer-events-none">
+          <div class="rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-white/10">
+            <div class="text-[10px] font-bold tracking-widest text-white/85" x-text="issue.quicklook.label"></div>
+          </div>
+          <a :href="issue.quicklook.sourceUrl" target="_blank" rel="noopener noreferrer"
+            class="relative z-20 pointer-events-auto text-[10px] rounded-full px-3 py-1 bg-black/35 backdrop-blur-sm border border-white/10 text-white/85 hover:bg-white hover:text-black transition">
+            <span x-text="issue.quicklook.sourceLabel"></span>
+          </a>
+        </div>
+        <div class="absolute bottom-0 left-0 p-6 w-full pointer-events-none">
+          <div class="inline-block rounded-2xl px-4 py-3 bg-black/20 backdrop-blur-sm border border-white/10 max-w-[92%]">
+            <h3 class="text-lg font-bold text-white leading-tight" x-text="issue.quicklook.title"></h3>
+            <p class="text-xs text-white/70" x-text="issue.quicklook.subtitle"></p>
+          </div>
+        </div>
+        <button type="button" class="absolute inset-0 z-10" @click="openLightbox('quicklook')"
+          aria-label="Open Quicklook image"></button>
+      </article>
+
+      <article id="coherence" class="flex flex-col rounded-3xl p-6 border transition-all duration-300""
+        :class="darkMode ? 'bg-gradient-to-br from-emerald-950/35 to-slate-950 border-white/10 hover:border-emerald-400/40' : 'bg-white border-slate-200 shadow-sm hover:shadow-md'">
+        <div>
+          <div class="mb-3">
+            <div class="text-[10px] font-bold text-emerald-500 tracking-widest" x-text="issue.coherence.label"></div>
+            <p class="mt-1 text-[10px] font-mono opacity-55" x-text="issue.coherence.kicker"></p>
+          </div>
+          <h3 class="text-lg font-ui font-semibold leading-snug mb-2" x-text="issue.coherence.title"></h3>
+          <p class="text-xs opacity-75 leading-relaxed mb-3" x-text="issue.coherence.summary"></p>
+        </div>
+        <div class="mt-4 flex justify-end">
+          <a :href="issue.coherence.url" target="_blank" rel="noopener noreferrer"
+            class="text-xs font-bold hover:translate-x-1 transition">
+            <span x-text="issue.coherence.cta || 'Read →'"></span>
+          </a>
+        </div>
+      </article>
+
+      <article id="double-bounce" role="button" tabindex="0"
+        @click="openDoubleBounce()"
+        @keydown.enter.prevent="openDoubleBounce()"
+        @keydown.space.prevent="openDoubleBounce()"
+        class="relative noise-texture rounded-3xl p-6 flex flex-col justify-center items-center text-center overflow-hidden border cursor-pointer group select-none transition-all duration-300"
+        :class="darkMode ? 'bg-violet-950/35 text-white border-white/10 hover:border-violet-400/40' : 'bg-white text-slate-900 border-slate-200 hover:shadow-md'"
+        aria-label="Open Double Bounce item">
+
+        <div class="font-bold text-[10px] uppercase tracking-[0.32em] mb-1 text-violet-400"
+          x-text="issue.doubleBounce.label"></div>
+
+        <p class="text-[10px] font-mono opacity-60 mb-4" x-text="issue.doubleBounce.kicker"></p>
+
+        <!-- Image mode or fallback SVG mode -->
+        <template x-if="doubleBounceVisualUrl()">
+          <div class="w-full max-w-[330px]">
+            <img :src="doubleBounceVisualUrl()"
+              :alt="issue.doubleBounce.alt || issue.doubleBounce.title || 'Double Bounce visual'"
+              class="w-full h-auto rounded-xl border border-black/10 bg-white/70 group-hover:scale-[1.01] transition"
+              draggable="false" />
+          </div>
+        </template>
+
+        <!-- Link-only mode -->
+        <template x-if="!doubleBounceVisualUrl() && issue.doubleBounce.openUrl">
+          <div
+            class="w-full max-w-[330px] rounded-2xl border p-6"
+            :class="darkMode ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-slate-50'"
+          >
+            <div
+              class="mx-auto mb-4 h-14 w-14 rounded-2xl border flex items-center justify-center text-xl"
+              :class="darkMode ? 'border-white/15 bg-white/5 text-white/80' : 'border-slate-300 bg-white text-slate-700'"
+            >
+              ↗
+            </div>
+            <p class="text-xs font-mono opacity-65" x-text="issue.doubleBounce.cta || 'Open link →'"></p>
+          </div>
+        </template>
+
+        <h3 class="mt-4 text-sm font-bold" x-text="issue.doubleBounce.title"></h3>
+        <p class="mt-1 text-xs opacity-80" x-text="issue.doubleBounce.caption"></p>
+
+        <div class="mt-3 text-[10px] font-mono opacity-65 uppercase">
+          <span x-text="doubleBounceVisualUrl() ? 'Click to enlarge' : (issue.doubleBounce.cta || 'Open link →')"></span>
+        </div>
+      </article>
+
+      <template x-if="issue.promo && issue.promo.enabled">
+        <article class="md:col-span-2 rounded-3xl border p-4 flex items-center gap-4 transition-all"
+          :class="darkMode ? 'bg-indigo-950/35 border-indigo-500/30' : 'bg-indigo-50 border-indigo-200'">
+          <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-black/10 bg-black">
+            <img :src="issue.promo.imgUrl" alt="Promo image" class="w-full h-full object-cover" loading="lazy" decoding="async" />
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[10px] font-bold opacity-70 uppercase tracking-widest" x-text="issue.promo.eyebrow"></div>
+            <div class="text-sm font-bold leading-tight truncate" x-text="issue.promo.title"></div>
+            <div class="text-[10px] font-mono opacity-60 mt-1" x-text="issue.promo.note"></div>
+          </div>
+          <a :href="issue.promo.url" target="_blank" rel="noopener noreferrer"
+            class="text-xs font-bold px-3 py-2 rounded-xl border transition"
+            :class="darkMode ? 'border-indigo-300/30 text-white hover:bg-white/10' : 'border-indigo-200 text-indigo-900 hover:bg-white'">
+            View →
+          </a>
+        </article>
+      </template>
+    </section>
+
+    <footer class="pb-6">
+      <div class="backdrop-blur-md border rounded-full px-5 py-3 flex items-center justify-between shadow-xl transition-all duration-300"
+        :class="darkMode ? 'bg-black/40 border-white/20 text-gray-300' : 'bg-white/80 border-slate-300 text-slate-600'">
+        <a href="{{ site.baseUrl }}/"
+          class="group flex items-center gap-2 hover:text-sky-500 transition"
+          aria-label="Go to The Morning Backscatter homepage">
+          <span class="text-[10px] font-mono">ALL ISSUES</span>
+        </a>
+        <div class="w-px h-4 bg-current opacity-20 mx-2" aria-hidden="true"></div>
+        <a :href="issue.footer.fullSignalUrl" target="_blank" rel="noopener noreferrer"
+          class="group flex items-center gap-2 hover:text-emerald-500 transition" aria-label="Open Spectral Reflectance">
+          <span class="text-[10px] font-bold tracking-widest">SPECTRAL REFLECTANCE</span>
+        </a>
+        <div class="w-px h-4 bg-current opacity-20 mx-2" aria-hidden="true"></div>
+        <a :href="issue.footer.supportUrl" target="_blank" rel="noopener noreferrer"
+          class="group flex items-center gap-2 hover:text-yellow-500 transition" aria-label="Support the project">
+          <span class="text-[10px] font-mono">KEEP ME COHERENT</span>
+        </a>
+      </div>
+    </footer>
+  </main>
+
+  <div x-show="lightboxOpen" x-transition.opacity @keydown.escape.window="closeLightbox()"
+    class="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4" style="display: none;"
+    role="dialog" aria-modal="true" aria-label="Viewer">
+    <div @click.outside="closeLightbox()" class="relative max-w-5xl max-h-screen flex flex-col items-center w-full">
+      <div class="absolute -top-12 right-0 flex items-center gap-2">
+        <button @click="shareLightbox()"
+          class="text-white/70 hover:text-white transition border border-white/15 bg-white/5 hover:bg-white/10 rounded-full px-3 py-2 text-xs font-bold"
+          aria-label="Share this item" type="button">Share</button>
+        <button @click="closeLightbox()" class="text-white/60 hover:text-white transition text-4xl leading-none" aria-label="Close"
+          type="button">×</button>
+      </div>
+      <img :src="lightboxImg" class="max-h-[80vh] w-auto max-w-full rounded-lg shadow-2xl border border-white/10 bg-black/30"
+        :alt="lightboxAlt" />
+      <p x-text="lightboxCap"
+        class="text-center text-white/80 mt-4 font-mono text-sm max-w-2xl bg-black/50 px-4 py-2 rounded-2xl sm:rounded-full border border-white/10">
+      </p>
+      <div x-show="toast" class="mt-4 text-xs font-mono text-white/70" x-text="toast"></div>
+    </div>
+  </div>
+
+  <script>
+    function morningBackscatterApp() {
+      return {
+        issue: window.ISSUE,
+        darkMode: false,
+        lightboxOpen: false,
+        lightboxImg: '',
+        lightboxCap: '',
+        lightboxAlt: '',
+        lightboxKey: '',
+        doubleBounceThumb: (typeof doubleBounceSvgDataUrl === 'function') ? doubleBounceSvgDataUrl() : '',
+        toast: '',
+        _toastTimer: null,
+        _openingFromHash: false,
+
+        init() {
+          this.darkMode = (typeof initialThemeIsDark === 'function') ? initialThemeIsDark() : true;
+          document.documentElement.classList.toggle('dark', this.darkMode);
+          this.openFromHash();
+          window.addEventListener('hashchange', () => this.openFromHash());
+        },
+
+        prettyDate(iso) {
+          try {
+            const d = new Date(iso + 'T00:00:00Z');
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
+          } catch (e) { return iso; }
+        },
+
+        toggleTheme() {
+          this.darkMode = !this.darkMode;
+          document.documentElement.classList.toggle('dark', this.darkMode);
+          try { localStorage.setItem('mb_theme', this.darkMode ? 'dark' : 'light'); } catch (e) { }
+        },
+
+        baseUrl() {
+          const canon = (this.issue && this.issue.canonicalUrl ? String(this.issue.canonicalUrl) : '').trim();
+          if (canon && /^https?:\/\//i.test(canon)) return canon.replace(/#.*$/, '');
+          return window.location.href.replace(/#.*$/, '');
+        },
+
+        deepLink(key) { return this.baseUrl() + '#' + key; },
+        
+        doubleBounceVisualUrl() {
+          if (!this.issue.doubleBounce) return '';
+
+          return (
+            this.issue.doubleBounce.imageUrl ||
+            this.doubleBounceThumb ||
+            ''
+          );
+        },
+
+        openDoubleBounce() {
+          if (this.issue.doubleBounce && this.issue.doubleBounce.imageUrl) {
+            this.openLightbox('doubleBounce');
+            return;
+          }
+
+          if (this.issue.doubleBounce && this.issue.doubleBounce.openUrl) {
+            window.open(this.issue.doubleBounce.openUrl, '_blank', 'noopener,noreferrer');
+            return;
+          }
+
+          // Fallback placeholder SVG.
+          this.openLightbox('doubleBounce');
+        },
+
+        safeSetHash(hash) {
+          const h = hash || '';
+          try { history.replaceState(null, '', this.baseUrl() + h); }
+          catch (e) {
+            try { window.location.hash = h.replace(/^#/, ''); } catch (_) { }
+          }
+        },
+
+        setToast(msg, ms = 1200) {
+          this.toast = msg;
+          window.clearTimeout(this._toastTimer);
+          this._toastTimer = window.setTimeout(() => (this.toast = ''), ms);
+        },
+
+        async shareUrl(url, title, text) {
+          try {
+            if (navigator.share) {
+              await navigator.share({ title, text, url });
+              return true;
+            }
+          } catch (e) { }
+
+          try {
+            await navigator.clipboard.writeText(url);
+            this.setToast('Copied ✓');
+            return true;
+          } catch (e) {
+            try {
+              window.prompt('Copy link:', url);
+              this.setToast('Copy via prompt');
+              return true;
+            } catch (_) { }
+            this.setToast('Copy failed');
+            return false;
+          }
+        },
+
+        async shareIssue() {
+          const issueNo = String(this.issue.issueNo).padStart(3, '0');
+          const url = this.baseUrl();
+          const title = `${this.issue.title} — Issue #${issueNo}`;
+          const text = this.issue.shareSummary || this.issue.tagline || '';
+          await this.shareUrl(url, title, text);
+        },
+
+        async shareLightbox() {
+          const key = this.lightboxKey || 'issue';
+          const url = key === 'issue' ? this.baseUrl() : this.deepLink(key);
+          const issueNo = String(this.issue.issueNo).padStart(3, '0');
+          const baseTitle = `${this.issue.title} — Issue #${issueNo}`;
+          let title = baseTitle;
+          let text = this.issue.shareSummary || this.issue.tagline || '';
+
+          if (key === 'quicklook') {
+            title = `${baseTitle} — Quicklook`;
+            text = `Quicklook: ${this.issue.quicklook?.title || ''}`.trim();
+          } else if (key === 'double-bounce') {
+            title = `${baseTitle} — Double Bounce`;
+            text = `Double Bounce: ${this.issue.doubleBounce?.title || ''}`.trim();
+          }
+
+          await this.shareUrl(url, title, text);
+        },
+
+        openLightbox(key) {
+          if (key === 'quicklook') {
+            this.lightboxKey = 'quicklook';
+            this.lightboxImg = this.issue.quicklook.fullUrl || this.issue.quicklook.thumbUrl;
+            const credit = this.issue.quicklook.credit ? ` Credit: ${this.issue.quicklook.credit}.` : '';
+            this.lightboxCap = `${this.issue.quicklook.caption || ''}${credit}`;
+            this.lightboxAlt = this.issue.quicklook.alt || 'Quicklook image';
+            if (!this._openingFromHash) this.safeSetHash('#quicklook');
+          } else if (key === 'doubleBounce') {
+            this.lightboxKey = 'double-bounce';
+            this.lightboxImg = this.issue.doubleBounce.imageUrl || this.doubleBounceThumb;
+            this.lightboxCap = this.issue.doubleBounce.caption || '';
+            this.lightboxAlt = this.issue.doubleBounce.alt || this.issue.doubleBounce.title || 'Double Bounce item';
+            if (!this._openingFromHash) this.safeSetHash('#double-bounce');
+          }
+          this.lightboxOpen = true;
+        },
+
+        closeLightbox() {
+          this.lightboxOpen = false;
+          this.safeSetHash('');
+        },
+
+        openFromHash() {
+          const h = (window.location.hash || '').toLowerCase();
+          this._openingFromHash = true;
+          if (h === '#quicklook') this.openLightbox('quicklook');
+          else if (h === '#double-bounce') this.openLightbox('doubleBounce');
+          this._openingFromHash = false;
+        }
+      };
+    }
+  </script>
+</body>
+</html>

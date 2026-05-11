@@ -1,0 +1,74 @@
+issueNo: 1
+slug: "1"
+status: "ready"
+publishAt: "2026-05-14T07:30:00+02:00"
+title: "The Morning Backscatter"
+tagline: "A quick morning overpass of the remote sensing and geospatial world."
+shareSummary: "Pulse: commercial EO procurement. Quicklook: ship wakes and sunglint. Coherence: field-to-pixel validation. Double Bounce: false precision."
+
+pulse:
+  label: "PULSE"
+  kicker: "The main signal today."
+  title: "Planet Signs 7-Figure Enterprise Contract to Power Greece’s National Satellite Space Project"
+  summary: "Planet announced a two-year, seven-figure contract supporting Greece’s National Satellite Space Project, giving government institutions access to PlanetScope archives, high-resolution tasking, and related services for broad-area monitoring and downstream national workflows."
+  sourceUrl: "https://www.businesswire.com/news/home/20260507522857/en/Planet-Signs-7-Figure-Enterprise-Contract-to-Power-Greeces-National-Satellite-Space-Project"
+  cta: "BusinessWire →"
+  tags: 
+    - greece
+    - planet
+
+quicklook:
+  label: "QUICKLOOK"
+  kicker: "One scene, map, or visual worth opening."
+  title: "Greenland’s changing ice"
+  subtitle: "Sentinel-1 radar colours surface change across three winter acquisitions."
+  thumbUrl: "assets/images/001-quicklook.jpg"
+  fullUrl: "assets/images/001-quicklook.jpg"
+  alt: "Copernicus Sentinel-1 radar composite of northeastern Greenland showing outlet glaciers, stable ice, and changing sea ice along the coast."
+  caption: "A Sentinel-1 radar composite over northeastern Greenland, combining January, February, and March 2026 acquisitions into a colour view of surface change. White and grey areas indicate stable or little-changed ice, while stronger colours along the coast highlight shifting sea-ice type and cover."
+  sourceUrl: "https://www.esa.int/ESA_Multimedia/Images/2026/05/Earth_from_Space_Greenland_s_changing_ice"
+  sourceLabel: "ESA →"
+  credit: "Contains modified Copernicus Sentinel data (2026), processed by ESA"
+  licence: "CC BY-SA 3.0 IGO or ESA Standard Licence"
+  tags:
+    - sentinel-1
+    - sar
+    - greenland
+    - ice-sheet
+    - sea-ice
+    - climate
+
+coherence:
+  label: "COHERENCE"
+  kicker: "One useful read."
+  title: "Towards mutualism: reconciling field and EO data"
+  summary: "Field data is not perfect truth; it is sampled, biased, and context-dependent. Treat point-to-pixel validation as a statistical reconciliation problem."
+  url: "https://newsletter.cecil.earth/p/towards-mutualism-reconciling-differences"
+  cta: "Read more →"
+  tags: 
+    - validation
+    - field-data
+    - uncertainty
+
+doubleBounce:
+  label: "DOUBLE BOUNCE"
+  kicker: "The odd return."
+  title: "The bane of EO"
+  caption: "Cloud-free tasking, except for the target."
+  imageUrl: "assets/images/001-double-bounce.png"
+  alt: "Comic about Earth Observation experts receiving high-resolution cloud-free imagery where the target area is covered by a single opaque cloud."
+  openUrl: ""
+  cta: "Open comic →"
+  tags:
+    - eo-humour
+    - clouds
+    - tasking
+    - optical-imagery
+
+promo:
+  enabled: false
+  eyebrow: "SUPPORT THE SIGNAL"
+  title: "Keep Spectral Reflectance independent"
+  imgUrl: "assets/images/042-quicklook.png"
+  url: "https://buymeacoffee.com/YOURNAME"
+  note: "Optional support/promo slot. Keep rare and tasteful."

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="{{ site.language | default('en') }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>{{ site.title }}</title>
+  <meta name="description" content="{{ site.tagline }}" />
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.baseUrl }}/rss.xml" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <style>
+    [x-cloak] {
+      display: none !important;
+    }
+
+    :focus-visible {
+      outline: 2px solid rgba(52, 211, 153, 0.9);
+      outline-offset: 3px;
+    }
+  </style>
+
+  <script>
+    function initialThemeIsDark() {
+      const stored = localStorage.getItem('mb_theme');
+      if (stored === 'dark') return true;
+      if (stored === 'light') return false;
+      return false;
+    }
+
+    function themeApp() {
+      return {
+        darkMode: false,
+
+        init() {
+          this.darkMode = initialThemeIsDark();
+          document.documentElement.classList.toggle('dark', this.darkMode);
+        },
+
+        toggleTheme() {
+          this.darkMode = !this.darkMode;
+          document.documentElement.classList.toggle('dark', this.darkMode);
+
+          try {
+            localStorage.setItem('mb_theme', this.darkMode ? 'dark' : 'light');
+          } catch (e) { }
+        }
+      };
+    }
+  </script>
+</head>
+
+<body
+  x-data="themeApp()"
+  x-init="init()"
+  x-cloak
+  :class="darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-950'"
+  class="min-h-screen p-6 transition-colors duration-300"
+>
+  <main class="max-w-3xl mx-auto py-16">
+
+    <header class="flex items-start justify-between gap-4">
+      <div>
+        <h1 class="text-4xl font-black tracking-tight">{{ site.title }}</h1>
+        <p
+          class="mt-2"
+          :class="darkMode ? 'text-slate-300' : 'text-slate-600'"
+        >
+          {{ site.tagline }}
+        </p>
+      </div>
+
+      <button
+        @click="toggleTheme()"
+        type="button"
+        class="p-2 rounded-full border transition-all hover:scale-105 shrink-0"
+        :class="darkMode ? 'border-white/20 bg-white/5 hover:bg-white/10' : 'border-slate-300 bg-white shadow-sm'"
+        aria-label="Toggle theme"
+      >
+        <span x-show="darkMode" class="text-yellow-300 text-lg">☀</span>
+        <span x-show="!darkMode" class="text-slate-700 text-lg">☾</span>
+      </button>
+    </header>
+
+    {% if latest %}
+    <a
+      href="{{ latest.path }}"
+      class="block mt-10 rounded-3xl border p-6 transition"
+      :class="darkMode ? 'border-white/10 bg-white/5 hover:bg-white/10' : 'border-slate-200 bg-white shadow-sm hover:shadow-md'"
+    >
+      <div class="text-xs uppercase tracking-widest text-emerald-500">Latest issue</div>
+      <h2 class="mt-2 text-2xl font-bold">Issue #{{ "%03d"|format(latest.issueNo) }}</h2>
+      <p
+        class="mt-2"
+        :class="darkMode ? 'text-slate-300' : 'text-slate-600'"
+      >
+        {{ latest.pulse.title }} · {{ latest.quicklook.title }} · {{ latest.coherence.title }}
+      </p>
+    </a>
+    {% endif %}
+
+    <div
+      class="mt-8 flex gap-4 text-sm"
+      :class="darkMode ? 'text-slate-300' : 'text-slate-700'"
+    >
+    <a
+      class="underline underline-offset-4 hover:opacity-80"
+      href="{{ site.baseUrl }}/rss.xml"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      RSS
+    </a>
+
+    <a
+      class="underline underline-offset-4 hover:opacity-80"
+      href="{{ site.bylineUrl }}"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Spectral Reflectance
+    </a>
+    </div>
+
+  </main>
+</body>
+</html>
