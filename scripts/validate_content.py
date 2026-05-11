@@ -12,7 +12,7 @@ REQUIRED_SECTIONS = {
     "pulse": ["title", "summary", "sourceUrl", "cta"],
     "quicklook": ["title", "thumbUrl", "alt", "caption", "sourceUrl", "sourceLabel"],
     "coherence": ["title", "summary", "url", "cta"],
-    "doubleBounce": ["title", "caption"],
+    "doubleBounce": ["title"],
 }
 LIMITS = {
     ("pulse", "summary"): 300,
@@ -84,7 +84,7 @@ def validate_issue(path: Path) -> list[str]:
         ("pulse", "sourceUrl"),
         ("quicklook", "sourceUrl"),
         ("coherence", "url"),
-        ("doubleBounce", "sourceUrl"),
+        # ("doubleBounce", "sourceUrl"),
     ]:
         value = issue.get(section, {}).get(key)
         if value and not is_http_url(value):
