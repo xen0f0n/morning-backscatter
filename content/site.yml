@@ -1,0 +1,14 @@
+title: "The Morning Backscatter"
+tagline: "One EO signal, one visual, one coherent read, one odd return."
+# baseUrl: "https://YOUR-GITHUB-USER.github.io/morning-backscatter"
+baseUrl: "http://localhost:8000"
+language: "en"
+timezone: "Europe/Athens"
+
+bylineName: "Spectral Reflectance"
+bylineUrl: "https://www.spectralreflectance.space/"
+
+footer:
+  repoUrl: "https://github.com/YOUR-GITHUB-USER/morning-backscatter"
+  fullSignalUrl: "https://www.spectralreflectance.space/"
+  supportUrl: "https://buymeacoffee.com/xen0f0n"
