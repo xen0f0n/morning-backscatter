@@ -126,7 +126,7 @@
         <h1 class="text-3xl sm:text-4xl font-black tracking-tighter transition-colors"
           :class="darkMode ? 'bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-emerald-400 to-teal-300' : 'text-slate-950'"
           x-text="issue.title"></h1>
-        <p class="mt-1 text-xs font-mono opacity-65" x-text="issue.tagline"></p>
+        <p class="mt-1 text-sm font-ui opacity-70" x-text="issue.tagline"></p>
         <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
           <p class="text-[10px] font-ui tracking-widest uppercase opacity-60">
             <span x-text="'Issue #' + String(issue.issueNo).padStart(3,'0')"></span>
@@ -146,12 +146,16 @@
         </div>
       </div>
 
-      <button @click="toggleTheme()" class="p-2 rounded-full border transition-all hover:scale-105 shrink-0"
-        :class="darkMode ? 'border-white/20 bg-white/5 hover:bg-white/10' : 'border-slate-300 bg-white shadow-sm'"
-        aria-label="Toggle theme" type="button">
-        <span x-show="darkMode" class="text-yellow-300 text-lg">☀</span>
-        <span x-show="!darkMode" class="text-slate-700 text-lg">☾</span>
-      </button>
+<button
+  @click="toggleTheme()"
+  class="w-11 h-11 p-0 aspect-square rounded-full border transition-all hover:scale-105 shrink-0 flex items-center justify-center leading-none"
+  :class="darkMode ? 'border-white/20 bg-white/5 hover:bg-white/10' : 'border-slate-300 bg-white shadow-sm'"
+  aria-label="Toggle theme"
+  type="button"
+>
+  <span x-show="darkMode" class="text-yellow-300 text-lg leading-none">☀</span>
+  <span x-show="!darkMode" class="text-slate-700 text-lg leading-none">☾</span>
+</button>
     </header>
 
     <section class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-8">
