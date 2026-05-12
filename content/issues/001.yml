@@ -43,7 +43,7 @@ coherence:
   kicker: "One useful resource."
   title: "Tracking Iceberg A23a with Copernicus Sentinel-3 data"
   summary: "EUMETSAT follows Iceberg A23a's drift from the Weddell Sea toward South Georgia using Copernicus Sentinel-3 OLCI observations, while explaining when optical sensors work, when radar becomes essential, and why continuous polar monitoring matters for marine safety and climate adaptation."
-  url: "https://www.eumetsat.int/features/behind-data-tracking-iceberg-a23a-copernicus-sentinel-3-data"
+  sourceUrl: "https://www.eumetsat.int/features/behind-data-tracking-iceberg-a23a-copernicus-sentinel-3-data"
   cta: "EUMETSAT →"
   tags:
     - eumetsat
@@ -58,13 +58,13 @@ coherence:
 
 doubleBounce:
   label: "DOUBLE BOUNCE"
-  labelPill: True
+  labelPill: true
   kicker: "The odd return."
   title: "The bane of EO"
-  caption: ""
+  caption: "Cloud-free tasking, except for the target. AI-generated comic."
   imageUrl: "assets/images/001-double-bounce.png"
   alt: "Comic about Earth Observation experts receiving high-resolution cloud-free imagery where the target area is covered by a single opaque cloud."
-  openUrl: ""
+  sourceUrl: null
   cta: "Open comic →"
   
   # Optional card-preview controls only.
@@ -83,5 +83,5 @@ promo:
   eyebrow: ""
   title: ""
   imgUrl: "assets/images/001-quicklook.png"
-  url: "https://www.spectralreflectance.space/"
+  sourceUrl: "https://www.spectralreflectance.space/"
   note: "Optional support/promo slot."

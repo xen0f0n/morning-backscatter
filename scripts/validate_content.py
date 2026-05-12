@@ -11,7 +11,7 @@ REQUIRED_TOP = ["issueNo", "slug", "status", "publishAt", "pulse", "quicklook", 
 REQUIRED_SECTIONS = {
     "pulse": ["title", "summary", "sourceUrl", "cta"],
     "quicklook": ["title", "thumbUrl", "alt", "caption", "sourceUrl", "sourceLabel"],
-    "coherence": ["title", "summary", "url", "cta"],
+    "coherence": ["title", "summary", "sourceUrl", "cta"],
     "doubleBounce": ["title"],
 }
 LIMITS = {

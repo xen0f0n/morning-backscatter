@@ -237,7 +237,7 @@
           <p class="text-sm opacity-75 leading-relaxed mb-3" x-text="issue.coherence.summary"></p>
         </div>
         <div class="mt-4 flex justify-end">
-          <a :href="issue.coherence.url" target="_blank" rel="noopener noreferrer"
+          <a :href="issue.coherence.sourceUrl" target="_blank" rel="noopener noreferrer"
             class="text-xs font-bold hover:translate-x-1 transition">
             <span x-text="issue.coherence.cta || 'Read →'"></span>
           </a>
@@ -268,7 +268,7 @@
         </template>
 
         <!-- Link-only fallback -->
-        <template x-if="!doubleBounceVisualUrl() && issue.doubleBounce.openUrl">
+        <template x-if="!doubleBounceVisualUrl() && issue.doubleBounce.sourceUrl">
           <div
             class="absolute inset-0 flex items-center justify-center p-8"
             :class="darkMode ? 'bg-gradient-to-br from-violet-950 to-slate-950' : 'bg-gradient-to-br from-violet-50 to-slate-100'"
@@ -336,7 +336,7 @@
             <div class="text-sm font-bold leading-tight truncate" x-text="issue.promo.title"></div>
             <div class="text-[10px] font-mono opacity-60 mt-1" x-text="issue.promo.note"></div>
           </div>
-          <a :href="issue.promo.url" target="_blank" rel="noopener noreferrer"
+          <a :href="issue.promo.sourceUrl" target="_blank" rel="noopener noreferrer"
             class="text-xs font-bold px-3 py-2 rounded-xl border transition"
             :class="darkMode ? 'border-indigo-300/30 text-white hover:bg-white/10' : 'border-indigo-200 text-indigo-900 hover:bg-white'">
             View →
@@ -474,8 +474,8 @@
             return;
           }
 
-          if (this.issue.doubleBounce && this.issue.doubleBounce.openUrl) {
-            window.open(this.issue.doubleBounce.openUrl, '_blank', 'noopener,noreferrer');
+          if (this.issue.doubleBounce && this.issue.doubleBounce.sourceUrl) {
+            window.open(this.issue.doubleBounce.sourceUrl, '_blank', 'noopener,noreferrer');
             return;
           }
 
