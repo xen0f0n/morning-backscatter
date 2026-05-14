@@ -1,0 +1,87 @@
+issueNo: 2
+slug: "2"
+status: "ready"
+publishAt: "2026-05-14T08:00:00+03:00"
+title: "The Morning Backscatter"
+tagline: "A quick morning overpass of the remote sensing and geospatial world."
+
+pulse:
+  label: "PULSE"
+  kicker: "The main signal today."
+  title: "NASA's Prithvi becomes the first geospatial foundation model in orbit"
+  summary: "NASA's open-source Prithvi geospatial AI foundation model has been uploaded and demonstrated on two orbiting platforms, testing flood and cloud detection while pointing toward more flexible onboard Earth Observation analysis before data reaches the ground."
+  sourceUrl: "https://science.nasa.gov/science-research/ai-foundation-model-in-orbit/"
+  cta: "NASA →"
+  tags:
+    - nasa
+    - prithvi
+    - foundation-models
+    - geoai
+    - onboard-processing
+    - earth-observation
+
+quicklook:
+  label: "QUICKLOOK"
+  labelPill: true
+  kicker: "One scene, map, or visual worth opening."
+  title: "America's Emerald Isle"
+  subtitle: "Landsat 9 captures Beaver Island and its Lake Michigan archipelago."
+  thumbUrl: "assets/images/002-quicklook.jpg"
+  fullUrl: "assets/images/002-quicklook.jpg"
+  alt: "Landsat 9 image of Beaver Island and nearby islands in Lake Michigan, showing green vegetation, sandy shorelines, turquoise shallow waters, and dark blue deeper water."
+  caption: "A Landsat 9 OLI view of Beaver Island and nearby islands in northern Lake Michigan, where green vegetation, bright sandy perimeters, turquoise shallows, and deeper blue waters reveal the shape of the Beaver Archipelago."
+  sourceUrl: "https://science.nasa.gov/earth/earth-observatory/americas-emerald-isle/"
+  sourceLabel: "NASA EO →"
+  credit: "NASA Earth Observatory image by Wanmei Liang, using Landsat data from the U.S. Geological Survey"
+  licence: "NASA Earth Observatory"
+  tags:
+    - nasa-earth-observatory
+    - landsat-9
+    - oli
+    - lake-michigan
+    - beaver-island
+    - archipelago
+    - land-cover
+
+coherence:
+  label: "COHERENCE"
+  kicker: "One useful resource."
+  title: "Gaussian splats for Sentinel-2 super-resolution"
+  summary: "Caleb Robinson and Isaac Corley use Gaussian splats, multi-temporal Sentinel-2 observations, and an explicit sensor blur model to sharpen 10m imagery."
+  sourceUrl: "https://geospatialml.com/posts/sentinel2-superresolution/"
+  cta: "Read →"
+  tags:
+    - sentinel-2
+    - super-resolution
+    - gaussian-splats
+    - pytorch
+    - remote-sensing
+    - geospatial-ml
+
+doubleBounce:
+  label: "DOUBLE BOUNCE"
+  labelPill: true
+  kicker: "The odd return."
+  title: "STAC evangelist at a party"
+  caption: "If it's not on STAC, it doesn't exist. AI-generated comic."
+  credit: "AI-generated comic"
+  imageUrl: "assets/images/002-stac-evangelist-at-a-party.png"
+  alt: "Comic showing a STAC evangelist at a party explaining structured metadata, assets, links, and collections, before asking whether a drink is catalogued."
+  sourceUrl: null
+  cta: "Open comic →"
+
+  previewZoom: 1.35
+  previewPosition: "center 44%"
+  previewOrigin: "center center"
+
+  tags:
+    - stac
+    - metadata
+
+promo:
+  enabled: false
+  eyebrow: ""
+  title: ""
+  imgUrl: "assets/images/001-quicklook.png"
+  sourceUrl: "https://www.spectralreflectance.space/"
+  note: "Optional support/promo slot."
