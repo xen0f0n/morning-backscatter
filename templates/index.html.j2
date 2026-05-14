@@ -140,6 +140,49 @@
     </a>
     {% endif %}
 
+    {% if issues %}
+  <section class="mt-8">
+    <h2
+      class="text-xs uppercase tracking-widest font-bold"
+      :class="darkMode ? 'text-slate-400' : 'text-slate-500'"
+    >
+      All issues
+    </h2>
+
+    <div class="mt-3 space-y-3">
+      {% for item in issues[1:] %}
+        <a
+          href="{{ item.path }}"
+          class="block rounded-2xl border p-4 transition-all duration-300"
+          :class="darkMode ? 'bg-white/5 border-white/10 hover:border-emerald-400/40 hover:bg-white/10' : 'bg-white border-slate-200 shadow-sm hover:shadow-md'"
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div class="text-sm font-bold">
+                Issue #{{ "%03d"|format(item.issueNo) }}
+              </div>
+
+              <p
+                class="mt-1 text-sm leading-relaxed"
+                :class="darkMode ? 'text-slate-300' : 'text-slate-600'"
+              >
+                {{ item.pulse.title }} · {{ item.quicklook.title }} · {{ item.coherence.title }}
+              </p>
+            </div>
+
+            <span
+              class="text-xs font-bold shrink-0"
+              :class="darkMode ? 'text-emerald-300' : 'text-emerald-600'"
+            >
+              Open →
+            </span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
     <div
       class="mt-8 flex gap-4 text-sm"
       :class="darkMode ? 'text-slate-300' : 'text-slate-700'"
