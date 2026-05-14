@@ -7,54 +7,57 @@ from pathlib import Path
 from common import latest_publishable_issue, load_site_config
 
 
+def first_present(data: dict, *keys: str, default: str = "") -> str:
+    """Return the first non-empty value found in a dict."""
+    for key in keys:
+        value = data.get(key)
+        if value:
+            return str(value)
+    return default
+
+
+def section_link(section: dict) -> str:
+    """Support both old and new YAML schemas."""
+    return first_present(section, "sourceUrl", "url", "openUrl", default="#")
+
+
 def release_notes(issue: dict) -> str:
     issue_no = int(issue["issueNo"])
 
-    pulse_cta = issue["pulse"].get("cta", "Open source →")
-    coherence_cta = issue["coherence"].get("cta", "Read more →")
+    pulse = issue.get("pulse", {})
+    quicklook = issue.get("quicklook", {})
+    coherence = issue.get("coherence", {})
+    double_bounce = issue.get("doubleBounce", {})
 
-    quicklook_url = f'{issue["canonicalUrl"]}#quicklook'
-    double_bounce_url = f'{issue["canonicalUrl"]}#double-bounce'
+    og_image_url = issue.get("ogImageUrl", "")
 
-    return f"""# The Morning Backscatter #{issue_no:03d}
+    og_block = (
+        f'![The Morning Backscatter #{issue_no:03d}]({og_image_url})\n\n'
+        if og_image_url
+        else ""
+    )
+
+    return f"""{og_block}# The Morning Backscatter #{issue_no:03d} is live
 
 {issue.get("tagline", "A quick morning overpass of the remote sensing and geospatial world.")}
 
-## Pulse
+## In this issue
 
-**{issue["pulse"]["title"]}**
+**Pulse**  
+{pulse.get("title", "")}
 
-{issue["pulse"].get("summary", "")}
+**Quicklook**  
+{quicklook.get("title", "")}
 
-[{pulse_cta}]({issue["pulse"]["sourceUrl"]})
+**Coherence**  
+{coherence.get("title", "")}
 
-## Quicklook
-
-**{issue["quicklook"]["title"]}**
-
-{issue["quicklook"].get("subtitle", issue["quicklook"].get("caption", ""))}
-
-[Open quicklook]({quicklook_url})
-
-## Coherence
-
-**{issue["coherence"]["title"]}**
-
-{issue["coherence"].get("summary", "")}
-
-[{coherence_cta}]({issue["coherence"]["url"]})
-
-## Double Bounce
-
-**{issue["doubleBounce"]["title"]}**
-
-{issue["doubleBounce"].get("caption", "")}
-
-[Open Double Bounce]({double_bounce_url})
+**Double Bounce**  
+{double_bounce.get("title", "")}
 
 ---
 
-[Open the full issue]({issue["canonicalUrl"]})
+[Read the full issue]({issue["canonicalUrl"]})
 """
 
 
