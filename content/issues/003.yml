@@ -1,0 +1,88 @@
+issueNo: 3
+slug: "3"
+status: "draft"
+publishAt: "2026-05-18T08:00:00+03:00"
+title: "The Morning Backscatter"
+tagline: "A quick morning overpass of the remote sensing and geospatial world."
+
+pulse:
+  label: "PULSE"
+  kicker: "The main signal today."
+  title: "Raytheon completes design review for Landsat Next instruments"
+  summary: "Raytheon completed the preliminary design review for NASA's Landsat Next Instrument Suite, moving forward a multispectral imager expected to more than double current spatial resolution and capture twice the number of spectral bands."
+  sourceUrl: "https://www.rtx.com/news/news-center/2026/05/18/rtxs-raytheon-completes-design-review-of-landsat-next-space-instruments"
+  cta: "Read the announcement →"
+  tags:
+    - landsat-next
+    - raytheon
+    - rtx
+    - nasa
+    - multispectral
+    - earth-observation
+
+quicklook:
+  label: "QUICKLOOK"
+  labelPill: true
+  kicker: "One scene, map, or visual worth opening."
+  title: "Quito's volcanic landscape"
+  subtitle: "Sentinel-2 captures Ecuador's capital between volcanoes, valleys, clouds, and smoke."
+  thumbUrl: "assets/images/003-quicklook.jpg"
+  fullUrl: "assets/images/003-quicklook.jpg"
+  alt: "Copernicus Sentinel-2 image of Quito, Ecuador, showing the city in an Andean valley, surrounding volcanoes, and wildfire smoke plumes."
+  caption: "A Copernicus Sentinel-2 view of Quito stretching through a high-altitude Andean valley, with nearby volcanoes, snow-covered peaks, and smoke plumes from drought-driven wildfires visible around the city."
+  sourceUrl: "https://www.esa.int/ESA_Multimedia/Images/2026/05/Earth_from_Space_Quito_s_volcanic_landscape"
+  sourceLabel: "ESA →"
+  credit: "Contains modified Copernicus Sentinel data (2025), processed by ESA"
+  licence: "CC BY-SA 3.0 IGO or ESA Standard Licence"
+  tags:
+    - sentinel-2
+    - esa
+    - quito
+    - ecuador
+    - volcanoes
+    - wildfire
+    - andes
+
+coherence:
+  label: "COHERENCE"
+  kicker: "One useful resource."
+  title: "NOAA's next-generation Rapid Refresh Forecast System"
+  summary: "NOAA's RRFS page explains its next-generation high-resolution regional weather model, with 3 km North American coverage, forecasts up to 84 hours, built-in ensemble guidance, smoke and dust modelling, and links to operational data."
+  sourceUrl: "https://gsl.noaa.gov/rrfs/"
+  cta: "NOAA →"
+  tags:
+    - noaa
+    - rrfs
+    - weather-prediction
+    - numerical-weather-prediction
+    - forecasting
+
+doubleBounce:
+  label: "DOUBLE BOUNCE"
+  labelPill: true
+  kicker: "The odd return."
+  title: "Everything Is a Foundation Model Now"
+  caption: "When the model is old, but the pitch deck is new. AI-generated comic."
+  credit: "AI-generated comic"
+  imageUrl: "assets/images/003-everything-is-a-foundation-model-now.png"
+  alt: "Comic showing a marketing executive asking whether a random forest can be called a geospatial foundation model, because a forest is a foundation of nature."
+  sourceUrl: null
+  cta: "Open comic →"
+
+  previewZoom: 1.35
+  previewPosition: "center 44%"
+  previewOrigin: "center center"
+
+  tags:
+    - geoai
+    - foundation-models
+    - random-forest
+    - marketing
+
+promo:
+  enabled: false
+  eyebrow: ""
+  title: ""
+  imgUrl: "assets/images/001-quicklook.png"
+  sourceUrl: "https://www.spectralreflectance.space/"
+  note: "Optional support/promo slot."
